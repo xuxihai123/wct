@@ -1,0 +1,24 @@
+{
+  "name": "wct",
+  "version": "1.0.0",
+  "description": "webbench",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuxihai123/wct.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xuxihai123/wct/issues"
+  },
+  "homepage": "https://github.com/xuxihai123/wct#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "chalk": "^3.0.0"
+  }
+}
