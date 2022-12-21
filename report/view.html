@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>压测结果图</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.1/echarts.min.js"></script>
+  </head>
+  <body>
+    <div
+      style="padding: 30px 50px; width: 1000px; height: 600px; margin: 0 auto"
+    >
+      <h3>压测报告</h3>
+      <div
+        id="main"
+        style="width: 1000px; height: 600px; border: 1px solid lightblue"
+      ></div>
+    </div>
+    <script>
+      function check() {
+        window
+          .fetch("./chartdata.json")
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (data) {
+            draw(data);
+            setTimeout(function () {
+              check();
+            }, 3000);
+          });
+      }
+
+      var chartDom = document.getElementById("main");
+      var myChart = echarts.init(chartDom);
+
+      check();
+
+      function getLabels(runsecs, space) {
+        var end = runsecs;
+        var i = 0;
+        var labels = [];
+        while (i <= runsecs) {
+          var minutes = ~~(i / 60);
+          var secs = i % 60;
+          labels.push("0" + minutes + ":" + (secs > 9 ? secs : "0" + secs));
+          i += space;
+        }
+        return labels;
+      }
+
+      function draw(chartdata) {
+        var labels = getLabels(chartdata.runtime, chartdata.space);
+        var option = {
+          xAxis: {
+            type: "category",
+            data: labels,
+            axisLabel:{
+              interval:4,
+              rotate:-30,
+            }
+          },
+          yAxis: {
+            type: "value",
+          },
+          series: [
+            {
+              data: chartdata.values.map(function (temp) {
+                return temp.value;
+              }),
+              type: "line",
+            },
+          ],
+        };
+
+        myChart.setOption(option);
+      }
+    </script>
+  </body>
+</html>
